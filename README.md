@@ -173,3 +173,42 @@ The EDA script saves its results in `play_store_eda_output/`, keeping them separ
 ### Goal
 
 The EDA stage establishes a clear understanding of the available data and its limitations before moving on to sentiment analysis, recurring issue identification, and comparisons of user feedback across rating groups.
+
+---
+
+## Thematic Issue Classification Pipeline
+
+A reproducible machine-learning pipeline implemented in `model/classify_review_themes.py` (with project-root entry point `classify_review_themes.py`) extracts recurring themes, clusters reviews, and quantifies issues by priority.
+
+### Sequential Pipeline Workflow
+
+The complete analysis pipeline runs in three sequential steps:
+```bash
+preprocess_play_store_reviews.py  →  play_store_eda.py  →  classify_review_themes.py
+```
+
+1. **Preprocessing** (`preprocess_play_store_reviews.py`):
+   - Ingests raw review extracts from `reviews/`.
+   - Cleans developer response anomalies, deduplicates, and parses dates/ratings into structured CSVs in `processed_reviews/`.
+
+2. **Exploratory Data Analysis** (`play_store_eda.py`):
+   - Analyzes temporal patterns, source biases, and helpful votes.
+   - Generates 19 diagnostic plots and enriched `play_store_eda_output/review_level_eda_features.csv`.
+
+3. **Thematic Classification & Ranking** (`classify_review_themes.py` or `python model/classify_review_themes.py`):
+   - **Phase 1 (Embedding Generation):** Computes normalized 384-dimensional sentence embeddings using `all-MiniLM-L6-v2` with intelligent disk caching (`theme_analysis/embeddings.npy`).
+   - **Phase 2 (Cluster Discovery):** Reduces dimensions via 50D PCA and executes adaptive HDBSCAN clustering on non-short reviews. Generates `cluster_profiles.csv` and `plots/cluster_scatter.png`.
+   - **Phase 3 (Taxonomy Matching):** Uses multi-label cosine similarity matching against domain seed sentences with adaptive thresholding. Generates `review_themes.csv`.
+   - **Phase 4 (Quantification & Prioritization):** Computes priority score $P_t = 0.4 \cdot \text{freq}_t + 0.3 \cdot \text{severity}_t + 0.3 \cdot \text{recency}_t$, detects month-over-month trends, extracts representative reviews, and exports `theme_summary.csv`, `theme_priority_ranking.csv`, and visualization charts (`theme_frequency_bar.png`, `theme_rating_heatmap.png`, `theme_monthly_trend.png`).
+
+### Re-running on Fresh Data
+
+To re-run the full pipeline when new reviews are collected:
+1. Place or append raw `.txt` files in `reviews/`.
+2. Run:
+   ```bash
+   uv run python preprocess_play_store_reviews.py
+   uv run python play_store_eda.py
+   uv run python classify_review_themes.py
+   ```
+3. Compare `theme_analysis/theme_priority_ranking.csv` against previous runs to monitor changes in top issue frequencies and resolution rates.

@@ -530,17 +530,21 @@ def assign_themes(
     if uncategorized_prop > 0.15:
         logger.warning(
             f"Uncategorized reviews ({uncategorized_prop:.1%}) exceed 15% target at threshold {threshold}. "
-            f"Testing threshold 0.30 per implementation plan."
+            f"Lowering threshold to 0.30 per implementation plan."
         )
         test_binary = similarity_matrix >= 0.30
-        test_uncat_prop = (test_binary.sum(axis=1) == 0).sum() / len(df)
-        logger.info(f"Threshold=0.30 yields uncategorized proportion: {test_uncat_prop:.1%}")
-        # Keep original threshold if 0.35 is standard, or adjust if specified
-        if test_uncat_prop <= 0.15:
-            active_threshold = 0.30
-            binary_matrix = test_binary
-            theme_counts = binary_matrix.sum(axis=1)
-            logger.info(f"Adopted adjusted threshold {active_threshold:.2f}")
+        test_uncat_count = int((test_binary.sum(axis=1) == 0).sum())
+        test_uncat_prop = test_uncat_count / len(df)
+        non_short_mask = (df["_short_text"] == False).values
+        test_uncat_non_short = int(((test_binary.sum(axis=1) == 0) & non_short_mask).sum())
+        test_uncat_non_short_prop = test_uncat_non_short / non_short_mask.sum()
+        logger.info(
+            f"Threshold=0.30 yields {test_uncat_count}/{len(df)} ({test_uncat_prop:.1%}) uncategorized overall, "
+            f"and {test_uncat_non_short}/{non_short_mask.sum()} ({test_uncat_non_short_prop:.1%}) uncategorized among non-short reviews (>3 words)."
+        )
+        active_threshold = 0.30
+        binary_matrix = test_binary
+        theme_counts = binary_matrix.sum(axis=1)
 
     # Build review_themes DataFrame
     review_themes_data = {"review_id": df["review_id"].values}
@@ -864,7 +868,7 @@ def quantify_and_rank(
         theme_sub = merged[merged[t_col]]
         counts = [int((theme_sub["_month"] == m).sum()) for m in months]
         plt.plot(
-            months,
+            range(len(months)),
             counts,
             marker="o",
             linewidth=2,
@@ -872,6 +876,7 @@ def quantify_and_rank(
             label=f"{row['theme_label']} (total={row['mentions']})",
         )
 
+    plt.xticks(range(len(months)), months, fontsize=9.5)
     plt.title("Monthly Mention Trend for Top 5 Themes (Jun–Oct 2026)", fontsize=12, fontweight="bold", pad=12)
     plt.xlabel("Month", fontsize=10)
     plt.ylabel("Mentions Count", fontsize=10)

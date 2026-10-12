@@ -1,13 +1,13 @@
 theme_id,theme_label,priority_score,mentions,freq_pct,severity_raw,recency_raw,trend_direction,median_helpful_votes,helpful_signal_strong,example_review_sim
-T11,Slow or laggy performance,0.5884,183,31.23,0.7272727272727273,0.18579234972677597,decreasing,3.0,False,R_2c312acb00db31c9: this app very slow
-T4,Login or OTP failure,0.4985,40,6.83,0.8846153846153846,0.25,decreasing,1.0,False,R_e0fcd510a9587f70: Didn't get any otp to login
-T3,App crashes or won't open,0.4836,138,23.55,0.7129629629629629,0.2028985507246377,decreasing,3.0,False,R_d8d124eba15af055: This app is terrible and keeps crashing
-T5,Route or routing problems,0.4637,131,22.35,0.76,0.13740458015267176,decreasing,3.0,False,R_2692bb833f1eaf5a: All good but sometimes the cab's location is not appropriate .
-T10,Customer support unresponsive,0.4193,41,7.0,0.875,0.17073170731707318,decreasing,1.0,False,R_8fe74cd3e1437f76: no option to contact help desk
-T1,Pickup time wrong or changed,0.3605,103,17.58,0.75,0.10679611650485436,decreasing,3.0,False,R_3c6912408d53122e: Worthless app..Driver arrival shows in 5mins when we leave home to the pick point changes to 30mins..I mean changing to 
-T12,Permissions or policy popups,0.3577,98,16.72,0.6984126984126984,0.1836734693877551,decreasing,2.0,False,R_06422efecc2e685b: it ask too much permission when I open the app on regular basis
-T2,GPS tracking inaccurate,0.3541,117,19.97,0.6935483870967742,0.13675213675213677,decreasing,3.0,False,"R_9715069da52fa252: Not able to see real time tracking of my rostered cab. After updating the newer version, not able track the cab & also t"
-T9,Notification spam or missing alerts,0.3,9,1.54,0.625,0.4444444444444444,decreasing,2.0,False,"R_391eb43eca1a58cd: Too much pop up notification, which won't close easily. even you close the app and restart again it will show pop up not"
-T6,Booking fails or forced booking,0.2746,121,20.65,0.639344262295082,0.10743801652892562,decreasing,3.0,False,R_1a95b83953e346b1: not able to book cab.
-T7,Bad UI update or confusing interface,0.2666,33,5.63,0.7037037037037037,0.24242424242424243,increasing,3.0,False,R_f82d496b8d1a1f47: dislike the new update. Bring the old version back. It was simple and minimalist.
-T8,Driver or cab issues,0.2317,74,12.63,0.6744186046511628,0.13513513513513514,decreasing,2.5,False,R_2692bb833f1eaf5a: All good but sometimes the cab's location is not appropriate .
+T11,Slow or laggy performance,0.5514,233,39.76,0.7215189873417721,0.18454935622317598,decreasing,3.0,False,R_2c312acb00db31c9: this app very slow
+T3,App crashes or won't open,0.4718,187,31.91,0.7272727272727273,0.18181818181818182,decreasing,3.0,False,R_d8d124eba15af055: This app is terrible and keeps crashing
+T4,Login or OTP failure,0.4519,54,9.22,0.875,0.2222222222222222,decreasing,1.0,False,R_e0fcd510a9587f70: Didn't get any otp to login
+T10,Customer support unresponsive,0.4444,69,11.77,0.9148936170212766,0.14492753623188406,decreasing,2.0,False,R_8fe74cd3e1437f76: no option to contact help desk
+T12,Permissions or policy popups,0.4381,170,29.01,0.7297297297297297,0.17647058823529413,decreasing,2.0,False,R_06422efecc2e685b: it ask too much permission when I open the app on regular basis
+T5,Route or routing problems,0.4188,159,27.13,0.7752808988764045,0.12578616352201258,decreasing,3.0,False,R_2692bb833f1eaf5a: All good but sometimes the cab's location is not appropriate .
+T1,Pickup time wrong or changed,0.3616,152,25.94,0.7567567567567568,0.10526315789473684,decreasing,3.0,False,R_3c6912408d53122e: Worthless app..Driver arrival shows in 5mins when we leave home to the pick point changes to 30mins..I mean changing to 
+T2,GPS tracking inaccurate,0.3481,161,27.47,0.7261904761904762,0.11180124223602485,decreasing,4.0,False,"R_9715069da52fa252: Not able to see real time tracking of my rostered cab. After updating the newer version, not able track the cab & also t"
+T6,Booking fails or forced booking,0.3078,155,26.45,0.6923076923076923,0.12258064516129032,decreasing,3.0,False,R_1a95b83953e346b1: not able to book cab.
+T8,Driver or cab issues,0.3007,110,18.77,0.7419354838709677,0.13636363636363635,decreasing,3.0,False,R_2692bb833f1eaf5a: All good but sometimes the cab's location is not appropriate .
+T9,Notification spam or missing alerts,0.3,13,2.22,0.6666666666666666,0.38461538461538464,decreasing,1.5,False,"R_391eb43eca1a58cd: Too much pop up notification, which won't close easily. even you close the app and restart again it will show pop up not"
+T7,Bad UI update or confusing interface,0.2491,81,13.82,0.6885245901639344,0.19753086419753085,decreasing,3.0,False,R_f82d496b8d1a1f47: dislike the new update. Bring the old version back. It was simple and minimalist.
