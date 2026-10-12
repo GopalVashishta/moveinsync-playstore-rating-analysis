@@ -1,0 +1,11 @@
+﻿column,missing_count,missing_pct
+review_date,0,0.0
+rating,164,27.986348122866893
+review_text_clean,0,0.0
+helpful_count,422,72.01365187713311
+developer_reply_text,515,87.8839590443686
+developer_reply_date,515,87.8839590443686
+source_files,0,0.0
+source_count,0,0.0
+source_occurrences,0,0.0
+priority_score,0,0.0

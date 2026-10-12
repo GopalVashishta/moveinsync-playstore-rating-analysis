@@ -1,0 +1,46 @@
+PLAY STORE REVIEW EDA — DATA PROFILE AND DESCRIPTIVE FINDINGS
+==================================================================
+Input: C:\Users\Asus\Downloads\applications\moveinsync\processed_reviews\reviews_preprocessed.csv
+EDA run date: 2026-10-12
+
+1) Dataset profile
+- Rows: 586; unique review_id values: 586.
+- Parsed review-date range: 2018-09-21 00:00:00 to 2026-10-09 00:00:00.
+- Missing/invalid dates: 0.
+- Missing/invalid ratings: 164; rating-conflict rows: 0.
+- Missing helpful counts: 422; these are not treated as zero votes.
+- Reviews with captured developer replies: 71 (12.1% of rows).
+- Median review length: 18.000 words / 95.000 characters.
+- Multiple-source reviews: 84.
+
+2) Rating mix
+- Recorded rating counts: 1★: 292; 2★: 40; 3★: 42; 4★: 48; Unknown rating: 164
+- Read rating charts alongside the unknown/conflicting-rating counts; this EDA does not repair ratings.
+
+3) Source composition
+- Largest source counts (reviews may occur in more than one source): newest_1start.txt: 292; most_relevant.txt: 248; newest_4star_jun_oct.txt: 48; newest_3star_apr_oct.txt: 42; newest_2star_apr_12oct.txt: 40.
+- Totals across source files are not expected to sum to the number of unique reviews because duplicate reviews retain multi-source provenance.
+
+4) Temporal description
+- Highest collected-review month: 2026-06 (113); lowest: 2019-03 (0).
+- IMPORTANT: overall monthly counts combine a 'most relevant' sample with rating-specific newest samples. Peaks and dips can reflect sampling/collection composition; they are not automatically changes in issue prevalence or app quality.
+- Use the source-specific monthly chart before interpreting a time-series pattern. Monthly counts are review dates in the collected sample, not a population estimate of all app reviews.
+
+5) Helpful votes and company responses
+- Helpful-count statistics include only observed values; older reviews have had more time to accrue votes, and source visibility may differ.
+- Reply coverage means a developer reply was captured in this dataset. Absence is not proof that no reply exists elsewhere.
+- Reply-delay metrics are descriptive and require both dates. Negative delays are flagged, not silently repaired.
+
+6) Text descriptions
+- Generic-short-comment matches from a small exact-match list: 20. This is a review-for-inspection flag, not automatic deletion.
+- Frequent words/bigrams are lexical summaries. They can be distorted by phrasing, negation, spelling variants and words that are not issue categories.
+- This EDA does not infer sentiment, diagnose root causes, or identify semantic topic clusters.
+
+7) Files generated
+- overview_metrics.csv, missingness.csv, rating_summary.csv, source_summary.csv, source_overlap.csv
+- monthly_review_counts_overall.csv, monthly_counts_by_rating.csv (includes pct_of_month), monthly_counts_by_source.csv, monthly_collection_volume_outliers_by_source.csv, monthly_developer_reply_coverage.csv
+- source_rating_composition.csv, helpful_vote_summary.csv, helpful_vote_coverage_by_rating.csv
+- developer_reply_coverage_by_rating.csv, reply_delay_summary.csv, review_text_length_by_rating.csv
+- common_unigrams.csv, common_bigrams.csv, relationship_summary.csv, review_level_eda_features.csv, plots/*.png
+
+Interpret findings as descriptions of the collected sample. Check source-specific plots, month-by-month sample sizes, missingness, and rating provenance before treating any apparent relationship as a product-level signal.

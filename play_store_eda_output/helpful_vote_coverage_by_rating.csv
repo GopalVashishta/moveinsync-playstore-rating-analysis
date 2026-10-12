@@ -1,0 +1,6 @@
+﻿rating_group,review_count,vote_count_observed,vote_coverage_pct,median_votes_observed,mean_votes_observed
+1★,292,26,8.904109589041095,1.0,1.7307692307692308
+2★,40,5,12.5,1.0,1.0
+3★,42,2,4.761904761904762,1.0,1.0
+4★,48,1,2.083333333333333,1.0,1.0
+Unknown rating,164,130,79.26829268292683,3.0,7.553846153846154

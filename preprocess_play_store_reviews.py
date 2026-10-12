@@ -15,7 +15,7 @@ Outputs (created in ./processed_reviews beside this script):
     reviews_ranked.csv       Same reviews sorted by priority_score
     parsing_issues.csv       Orphan developer replies / unparsed prefixes
     processing_summary.txt   Counts and configuration summary
-    # Removed "Did you find this helpful?" part which came as noise in gathering reviews
+    # Removed "Did you find this helpful?" part which came as noise in gathering reviews via MS EXCEL
 """
 
 from __future__ import annotations
@@ -501,7 +501,7 @@ def main() -> int:
     all_issues: list[dict[str, Any]] = []
     input_stats: dict[str, dict[str, int]] = {}
 
-    for path in input_paths:
+    for filename, path in zip(INPUT_FILES, input_paths):
         try:
             records, issues, stats = parse_one_file(path, DEVELOPER_ALIASES)
         except (OSError, ValueError) as exc:
@@ -509,7 +509,7 @@ def main() -> int:
             return 1
         all_records.extend(records)
         all_issues.extend(issues)
-        input_stats[path.name] = stats
+        input_stats[filename] = stats
         print(
             f"Processed {path.name}: {stats['user_reviews_parsed']} reviews, "
             f"{stats['developer_blocks_detected']} developer blocks, "

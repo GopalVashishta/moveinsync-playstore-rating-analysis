@@ -1,0 +1,5 @@
+﻿variable_x,variable_y,n_complete_pairs,spearman_rho,interpretation_note
+recorded_rating,review_word_count,422,-0.014527037235558728,Association between recorded star rating and review length
+recorded_rating,helpful_count,34,-0.22738132498041996,Association between recorded star rating and observed helpful votes
+review_age_days,helpful_count,164,0.5663418508770754,Older reviews have had more time to accumulate helpful votes; exposure confounding expected
+review_word_count,helpful_count,164,0.5977090308712305,Association between review length and observed helpful votes

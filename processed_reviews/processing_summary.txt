@@ -20,19 +20,44 @@ Ranking configuration
 Per-file counts
 
 reviews/most_relevant.txt
-  Not processed
+  entries_detected: 317
+  user_reviews_parsed: 248
+  developer_blocks_detected: 69
+  orphan_developer_replies: 0
+  reviews_with_helpful_count: 143
+  reviews_with_reply: 69
 
 reviews/newest_1start.txt
-  Not processed
+  entries_detected: 295
+  user_reviews_parsed: 292
+  developer_blocks_detected: 3
+  orphan_developer_replies: 0
+  reviews_with_helpful_count: 26
+  reviews_with_reply: 3
 
 reviews/newest_2star_apr_12oct.txt
-  Not processed
+  entries_detected: 40
+  user_reviews_parsed: 40
+  developer_blocks_detected: 0
+  orphan_developer_replies: 0
+  reviews_with_helpful_count: 5
+  reviews_with_reply: 0
 
 reviews/newest_3star_apr_oct.txt
-  Not processed
+  entries_detected: 42
+  user_reviews_parsed: 42
+  developer_blocks_detected: 0
+  orphan_developer_replies: 0
+  reviews_with_helpful_count: 2
+  reviews_with_reply: 0
 
 reviews/newest_4star_jun_oct.txt
-  Not processed
+  entries_detected: 48
+  user_reviews_parsed: 48
+  developer_blocks_detected: 0
+  orphan_developer_replies: 0
+  reviews_with_helpful_count: 1
+  reviews_with_reply: 0
 
 Important interpretation notes
 - priority_score is a heuristic for review prioritization, not a sentiment score.

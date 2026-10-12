@@ -1,0 +1,9 @@
+﻿metric,value,interpretation
+observed_vote_rows,164.0,Only reviews with a captured vote count
+mean_helpful_count,6.310975609756097,Right-skew can make mean exceed typical values
+median_helpful_count,2.0,Median of observed helpful counts
+p75_helpful_count,7.0,75th percentile among observed counts
+p90_helpful_count,13.700000000000017,90th percentile among observed counts
+p95_helpful_count,25.849999999999994,95th percentile among observed counts
+max_helpful_count,70.0,Maximum captured vote count
+zero_vote_pct_among_observed,0.0,"Only meaningful if zeros were explicitly observed, not missing"

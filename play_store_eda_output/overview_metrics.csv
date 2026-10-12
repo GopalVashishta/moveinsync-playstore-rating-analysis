@@ -1,0 +1,23 @@
+﻿metric,value,interpretation
+rows,586,"Input rows, usually deduplicated reviews"
+unique_review_id,586,Unique values in review_id
+duplicate_review_id_rows,0,Rows whose review_id occurs more than once
+valid_review_dates,586,Rows with parseable review_date
+missing_review_dates,0,Rows with missing/unparseable review_date
+min_review_date,2018-09-21 00:00:00,Earliest review date in the collected sample
+max_review_date,2026-10-09 00:00:00,Latest review date in the collected sample
+valid_1_to_5_star_ratings,422,Rows with rating in 1..5; unknowns are not imputed
+missing_or_out_of_range_ratings,164,Missing or invalid star rating rows
+rating_conflict_rows,0,Rows flagged for conflicting source ratings
+reviews_with_helpful_count,164,Rows with observed helpful vote count
+missing_helpful_count_rows,422,Missing vote count; not treated as zero
+reviews_with_developer_reply,71,Rows with nonempty developer_reply_text
+reviews_without_developer_reply,515,No captured reply; not proof that company never replied
+empty_review_text_rows,0,Rows with empty cleaned review text
+symbol_only_text_rows,0,Nonempty text containing no ASCII letters/digits (approximate heuristic)
+generic_short_text_rows,20,Exact-match heuristic for generic short comments; do not auto-delete
+reviews_from_multiple_sources,84,Rows whose source_files lists multiple input files
+max_source_occurrences,2,"Largest saved source_occurrences value, when available"
+median_review_chars,95.0,Median character count in cleaned review text
+median_review_words,18.0,Median word count in cleaned review text
+median_helpful_count_among_observed,2.0,Median observed helpful votes; not adjusted for review age

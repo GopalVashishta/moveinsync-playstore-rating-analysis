@@ -1,0 +1,6 @@
+﻿source_file,unique_reviews,median_review_date,earliest_review_date,latest_review_date,rating_unknown_pct,helpful_count_coverage_pct,reply_coverage_pct
+most_relevant.txt,248,2025-10-13 12:00:00,2018-09-21,2026-09-18,66.12903225806451,57.66129032258065,0.2782258064516129
+newest_1start.txt,292,2026-08-03 12:00:00,2026-06-01,2026-10-09,0.0,8.904109589041095,0.010273972602739725
+newest_2star_apr_12oct.txt,40,2026-07-22 12:00:00,2026-04-13,2026-10-09,0.0,12.5,0.0
+newest_3star_apr_oct.txt,42,2026-06-25 12:00:00,2026-04-08,2026-10-03,0.0,4.761904761904762,0.0
+newest_4star_jun_oct.txt,48,2026-07-18 12:00:00,2026-06-02,2026-10-07,0.0,2.083333333333333,0.0

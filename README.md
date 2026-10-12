@@ -1,5 +1,175 @@
 # Case Study on PlayStore Review - MOVEINSYNC
 
-## Data Gathering: Through copying reviews manually by relevance & star rating + timeframe(newest previous 6-4 months)
+## Data Gathering
+Through copying reviews manually by relevance & star rating + timeframe(newest previous 6-4 months)
 
-## Processing Raw Reviews: 
+## Raw Data Preprocessing: RAW_DATA_PROCESSING.md
+
+The preprocessing script processes five text files containing parsed Google Play Store reviews: most_relevant.txt, newest_1start.txt, newest_2star_apr_12oct.txt, newest_3star_apr_oct.txt, and newest_4star_jun_oct.txt. It transforms the semi-structured raw text into a structured, deduplicated dataset suitable for further analysis.
+
+Processing Steps
+Load Raw Data: Reads all five text files and identifies review entries using reviewer names and date lines.
+Remove Interface Noise: Removes irrelevant Google Play Store interface text, such as "Did you find this helpful?" and "Did u find this useful?". Helpful-vote counts are extracted into a separate numeric field rather than discarded.
+Extract Review Metadata: Identifies reviewer names, review dates, review text, and helpful-vote counts where available. Missing helpful-vote counts are preserved as missing values rather than treated as zero.
+Identify Developer Responses: Recognizes company responses using configured developer-name aliases. Associates responses with the immediately preceding review and stores the response author, response date, and response text in separate fields. Unmatched developer responses are recorded for inspection.
+Infer Star Ratings: Extracts star ratings from filenames when possible. For example, newest_1start.txt is interpreted as a one-star review source. Reviews from files that do not specify a rating retain a missing rating unless another source provides it.
+Deduplicate Reviews: Identifies duplicate reviews across the input files using the reviewer name, review date, and normalized review text. Duplicate records are merged, source filenames are retained, and available metadata is consolidated. If helpful-vote counts differ across duplicate snapshots, the maximum observed count is used for ranking, while the observed counts are retained separately. Conflicting ratings are flagged rather than silently resolved.
+
+Calculate Relevance Scores: Assigns each review a priority score based on recency and helpfulness:
+
+Recency weight: Uses exponential decay with a configurable half-life of 730 days, giving newer reviews greater weight.
+Helpfulness weight: Applies logarithmic normalization to helpful-vote counts to reduce the influence of exceptionally high counts.
+Combined priority score: Uses a default weighting of 70% recency and 30% helpfulness. When helpful-vote counts are missing, the recency score is used alone.
+
+The priority score is a heuristic for prioritizing reviews, not a sentiment score or a measure of review quality.
+
+Record Developer Response Information: Keeps company responses separate from user reviews and records whether a response exists. Where dates are available, it also calculates the response delay in days. Developer responses do not automatically increase a review's priority score.
+Export Processed Data and Audit Information: Saves the structured dataset, a relevance-ranked version, parsing issues, and a processing summary.
+Output Files
+File	Description
+reviews_preprocessed.csv	Deduplicated reviews with structured metadata, review text, developer responses, and relevance scores, ordered by review date.
+reviews_ranked.csv	The same dataset sorted by descending priority score.
+parsing_issues.csv	Unmatched developer responses and other detected parsing issues requiring inspection.
+processing_summary.txt	Summary of processing statistics, duplicate counts, missing metadata, and scoring configuration.
+Important Considerations
+Original review wording and raw review blocks are retained for traceability.
+Missing metadata is not automatically interpreted as zero or as evidence of a negative outcome.
+Star ratings are inferred from filenames only when the filename contains a recognizable rating pattern.
+Deduplication relies on reviewer name, review date, and normalized review text; differently formatted or edited duplicates may not always be identified.
+Developer-response identification depends on the configured author-name aliases.
+The relevance score is intended to help prioritize reviews for subsequent analysis, such as sentiment analysis, topic extraction, complaint categorization, and analysis of company responses.
+
+The resulting dataset provides a consistent foundation for analyzing user feedback while preserving the metadata and contextual information needed for further investigation.
+
+### Current Dataset Summary (as of 2026-10-12)
+
+| Metric | Value |
+|---|---|
+| Input review occurrences parsed | 670 |
+| Unique reviews after deduplication | 586 |
+| Duplicates merged | 84 |
+| Review date range | 2018-09-21 → 2026-10-09 |
+| Reviews with inferred star rating | 422 (72.0%) |
+| Reviews with missing rating | 164 (28.0%) — all from `most_relevant.txt` |
+| Reviews with helpful-vote count | 164 (28.0%) |
+| Reviews with captured developer reply | 71 (12.1%) |
+| Parsing issues | 0 |
+
+**Rating breakdown (of 422 rated reviews):**
+
+| Rating | Count | % of rated |
+|---|---|---|
+| 1★ | 292 | 69.2% |
+| 2★ | 40 | 9.5% |
+| 3★ | 42 | 10.0% |
+| 4★ | 48 | 11.4% |
+
+**Note:** 5-star reviews were not collected. The rating distribution reflects the collection strategy (focused on 1–4★ and most-relevant reviews), not app-wide sentiment. Reviews from `most_relevant.txt` that also appear in a star-specific file receive the star rating from that file; the remaining 164 reviews from `most_relevant.txt` alone retain a missing rating.
+
+**Developer reply coverage by rating group:**
+
+| Rating | Reviews | Replied | Coverage |
+|---|---|---|---|
+| 1★ | 292 | 3 | 1.0% |
+| 2★ | 40 | 0 | 0.0% |
+| 3★ | 42 | 0 | 0.0% |
+| 4★ | 48 | 0 | 0.0% |
+| Unknown | 164 | 68 | 41.5% |
+
+Developer replies are concentrated in the older `most_relevant.txt` reviews. Absence of a captured reply does not mean the company never responded — only that the reply was not present in the collected data.
+
+## Exploratory Data Analysis(what we're checking for) 
+
+### Overview
+
+The EDA script examines the preprocessed Google Play Store reviews before conducting detailed sentiment or thematic analysis. Its main purpose is to understand the dataset's coverage, quality, rating distribution, and text characteristics, and to establish a fair time period for comparing reviews across star ratings.
+
+The script uses `processed_reviews/reviews_preprocessed.csv`, generated by the preprocessing script.
+
+### What the Script Does
+
+1. **Checks dataset coverage**
+   - Counts reviews by star rating and source file.
+   - Examines the earliest and latest review dates.
+   - Summarizes the number of reviews collected per month.
+   - Identifies differences in date coverage between rating groups.
+
+2. **Assesses data quality**
+   - Checks for missing review dates, ratings, review text, and other relevant fields.
+   - Reports duplicate records and other potential data inconsistencies where identifiable.
+   - Summarizes review counts before subsequent filtering.
+
+3. **Analyzes review text**
+   - Measures review length using character and word counts.
+   - Examines the distribution of short and long reviews.
+   - Flags potentially low-information reviews, such as `"worst app"`, `"good app"`, `"worst"`, or `"best"`.
+   - Keeps flagged reviews in the dataset rather than deleting them automatically, so the analysis can compare results with and without them later.
+
+   **Note:** Short reviews are not necessarily unhelpful. A review such as `"App crashes on login"` may be brief but still describe a specific issue.
+
+4. **Establishes a comparable analysis period**
+   - Compares date coverage across rating groups.
+   - Identifies a common period supported by the available data.
+   - Creates a subset of reviews within the selected period for more balanced star-rating comparisons.
+   - Keeps the full preprocessed dataset unchanged.
+
+   The common period is determined from the actual review dates rather than assumed from filenames. For example, if the four-star collection only contains sufficient coverage from June onward, the script can use the overlapping June–October period for direct comparisons, subject to verification of the data.
+
+5. **Treats the most-relevant collection separately**
+   - Examines the date range and overlap of reviews from `most_relevant.txt`.
+   - Accounts for duplicates already present in the recent review collections.
+   - Treats this collection as supplementary historical context when its coverage differs from the recent reviews, rather than automatically combining it with the main comparison dataset.
+
+### Outputs
+
+The EDA script saves its results in `play_store_eda_output/`, keeping them separate from the original and preprocessed review data.
+
+**Summary and profile files:**
+- `eda_report.txt` — Overall dataset size, rating distribution, date coverage, data-quality observations, and interpretive caveats.
+- `overview_metrics.csv` — Key dataset metrics (row count, date range, missingness counts, median review length).
+- `missingness.csv` — Missing-value counts and percentages per column.
+
+**Rating and source breakdowns:**
+- `rating_summary.csv` — Review counts, median text length, helpful-vote coverage, and reply coverage per rating group.
+- `source_summary.csv` — Per-source-file review counts, date ranges, and coverage statistics.
+- `source_overlap.csv` — How many reviews appear in one vs multiple source files.
+- `source_rating_composition.csv` — Which rating groups each source file contributes.
+
+**Temporal analysis:**
+- `monthly_review_counts_overall.csv` — Unique reviews per month, all sources combined.
+- `monthly_counts_by_rating.csv` — Monthly review counts broken out by rating group, with percentage of each month's total.
+- `monthly_counts_by_source.csv` — Monthly review counts per source file.
+- `monthly_collection_volume_outliers_by_source.csv` — Robust outlier detection (median/MAD z-scores) for monthly volume per source.
+
+**Text characteristics:**
+- `review_text_length_by_rating.csv` — Word and character count distributions per rating group, including generic-short-review counts.
+- `common_unigrams.csv` — Top unigrams by review occurrence count (simple stopword filter).
+- `common_bigrams.csv` — Top bigrams by review occurrence count.
+
+**Developer response analysis:**
+- `developer_reply_coverage_by_rating.csv` — Reply counts and coverage percentages per rating group.
+- `monthly_developer_reply_coverage.csv` — Monthly reply coverage percentages.
+- `reply_delay_summary.csv` — Reply delay statistics (median, percentiles, negative-delay count).
+
+**Helpful vote analysis:**
+- `helpful_vote_summary.csv` — Descriptive statistics for observed helpful-vote counts.
+- `helpful_vote_coverage_by_rating.csv` — Helpful-vote coverage and median/mean per rating group.
+
+**Relationships and review-level features:**
+- `relationship_summary.csv` — Spearman correlations between key numeric variables.
+- `review_level_eda_features.csv` — Per-review features including `_generic_short_review` flag, `_rating_label`, text length columns, and `_month`. This file serves as the enriched dataset for downstream analysis.
+
+**Visualizations (19 plots in `plots/`):**
+- Rating distribution, source volume, source overlap, monthly counts (overall, by rating, by source), monthly rating mix, monthly reply coverage, source rating composition, helpful-vote distributions, reply coverage by rating, reply delay histogram, review length distributions, top unigrams, top bigrams, and priority score distribution.
+
+### Important Analysis Decisions
+
+- Reviews are **not deleted solely because they are short or vague** during EDA.
+- Recent reviews are the primary dataset for understanding the app's current user experience.
+- Older reviews can be retained for historical context and to identify issues that may have persisted over time.
+- Comparisons across star ratings should use a common date period where possible, reducing the risk of confusing differences in collection coverage with differences in user experience.
+- All filtering decisions should be documented so that the analysis remains reproducible.
+
+### Goal
+
+The EDA stage establishes a clear understanding of the available data and its limitations before moving on to sentiment analysis, recurring issue identification, and comparisons of user feedback across rating groups.
