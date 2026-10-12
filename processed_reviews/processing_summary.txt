@@ -1,0 +1,42 @@
+Google Play review preprocessing summary
+========================================
+Run date: 2026-10-12
+Input review occurrences parsed: 670
+Unique reviews after deduplication: 586
+Duplicates merged: 84
+Parsing issues logged: 0
+Reviews with helpful count: 164
+Reviews with developer reply: 71
+Reviews with inferred rating: 422
+
+Ranking configuration
+- Recency half-life: 730 days
+- Recency weight: 0.70
+- Helpfulness weight: 0.30
+- When helpful votes are missing, priority_score uses recency_weight alone.
+- Helpful counts across duplicate snapshots use the maximum observed value;
+  all distinct observed counts are retained in helpful_counts_observed.
+
+Per-file counts
+
+reviews/most_relevant.txt
+  Not processed
+
+reviews/newest_1start.txt
+  Not processed
+
+reviews/newest_2star_apr_12oct.txt
+  Not processed
+
+reviews/newest_3star_apr_oct.txt
+  Not processed
+
+reviews/newest_4star_jun_oct.txt
+  Not processed
+
+Important interpretation notes
+- priority_score is a heuristic for review prioritization, not a sentiment score.
+- No helpful count is represented as missing, not zero.
+- Developer replies are kept separate from user review text.
+- Ratings are inferred from filenames only; most_relevant.txt alone does not identify rating.
+- Rating conflicts across source files are marked in rating_conflict.
