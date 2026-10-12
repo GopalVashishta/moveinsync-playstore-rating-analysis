@@ -1,7 +1,7 @@
-# Case Study on PlayStore Review - MOVEINSYNC
+# Case Study on PlayStore Review Methodology- MOVEINSYNC
 
 ## Data Gathering
-Through copying reviews manually by relevance & star rating + timeframe(newest previous 6-4 months)
+The dataset was manually compiled using a dual-sampling approach. One subset was captured using the 'most relevant' filter, yielding a generalized cross-section of reviews. The remaining datasets were stratified by specific star ratings and sorted by 'newest' to capture chronological feedback from the past 4 to 6 months.
 
 ## Raw Data Preprocessing: RAW_DATA_PROCESSING.md
 
@@ -64,8 +64,6 @@ The resulting dataset provides a consistent foundation for analyzing user feedba
 | 3★ | 42 | 10.0% |
 | 4★ | 48 | 11.4% |
 
-**Note:** 5-star reviews were not collected. The rating distribution reflects the collection strategy (focused on 1–4★ and most-relevant reviews), not app-wide sentiment. Reviews from `most_relevant.txt` that also appear in a star-specific file receive the star rating from that file; the remaining 164 reviews from `most_relevant.txt` alone retain a missing rating.
-
 **Developer reply coverage by rating group:**
 
 | Rating | Reviews | Replied | Coverage |
@@ -75,8 +73,6 @@ The resulting dataset provides a consistent foundation for analyzing user feedba
 | 3★ | 42 | 0 | 0.0% |
 | 4★ | 48 | 0 | 0.0% |
 | Unknown | 164 | 68 | 41.5% |
-
-Developer replies are concentrated in the older `most_relevant.txt` reviews. Absence of a captured reply does not mean the company never responded — only that the reply was not present in the collected data.
 
 ## Exploratory Data Analysis(what we're checking for) 
 
@@ -211,4 +207,4 @@ To re-run the full pipeline when new reviews are collected:
    uv run python play_store_eda.py
    uv run python classify_review_themes.py
    ```
-3. Compare `theme_analysis/theme_priority_ranking.csv` against previous runs to monitor changes in top issue frequencies and resolution rates.
+3. Compare `theme_analysis/theme_priority_ranking.csv` against previous runs to monitor changes in top issue frequencies and resolution rates.
